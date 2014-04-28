@@ -20,7 +20,7 @@ KEYWORDS="-* arm"
 
 RESTRICT="strip mirror"
 
-DEPEND="x11-base/xorg-server"
+DEPEND=""
 RDEPEND="${DEPEND}"
 
 S=${WORKDIR}/${PN}-${MY_PV}
@@ -36,12 +36,17 @@ src_configure() {
 	#sed -i 's#^prefix=/usr#prefix=/'${FSLDIR}'/usr#' usr/lib/pkgconfig/*.pc
  	#sed -i 's#^exec_prefix=/usr#exec_prefix=/'${FSLDIR}'/usr#' usr/lib/pkgconfig/*.pc
 
+	#gcc on Gentoo seems to define it lowercase
 	sed -i s/LINUX/linux/g usr/include/EGL/eglvivante.h
 }
 
 src_compile() {
 	#taken from repo of @danbrough
-#	rm -rf opt
+	#some cleanup
+	rm -rf opt
+
+	rm usr/lib/directfb-1.6-0 -rf
+	rm include/wayland-viv -rf
 	mkdir -p $OPENGLDIR/include $OPENGLDIR/lib $OPENGLDIR/extensions
 
 	mv usr/include/* $OPENGLDIR/include/
@@ -62,11 +67,11 @@ src_compile() {
 
 	for library in EGL GAL GLESv2 VIVANTE; do
 		ln -sf lib${library}-fb.so lib${library}.so
-#		rm lib${library}-{wl,fb, dfb}.so
+		rm lib${library}-{wl,x11,dfb}.so
 	done
 
-#	rm libgc_wayland*
-#	rm libwayland*
+	rm libgc_wayland*
+	rm libwayland*
 
 	ln -sf libGLESv2-fb.so libGLESv2.so.2
 	ln -sf libGLESv2-fb.so libGLESv2.so.2.0.0
