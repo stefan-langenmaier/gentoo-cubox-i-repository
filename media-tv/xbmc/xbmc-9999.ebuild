@@ -123,7 +123,8 @@ COMMON_DEPEND="${PYTHON_DEPS}
 		xrandr? ( x11-libs/libXrandr )
 		x11-libs/libXrender
 	)
-	sys-libs/imx-vpu"
+	sys-libs/imx-vpu
+	sys-libs/libfslvpuwrap"
 RDEPEND="${COMMON_DEPEND}
 	udev? (	sys-fs/udisks:0 sys-power/upower )"
 DEPEND="${COMMON_DEPEND}
@@ -218,6 +219,7 @@ src_configure() {
 		--disable-optimizations \
 		--enable-external-libraries \
 		--enable-codec=imxvpu \
+		--enable-upnp \
 		$(has_version 'media-video/libav' && echo "--enable-libav-compat") \
 		--enable-gl \
 		$(use_enable airplay) \
@@ -247,7 +249,6 @@ src_configure() {
 		$(use_enable sdl) \
 		$(use_enable sftp ssh) \
 		$(use_enable usb libusb) \
-		$(use_enable upnp) \
 		$(use_enable vaapi) \
 		$(use_enable vdpau) \
 		$(use_enable webserver) \
