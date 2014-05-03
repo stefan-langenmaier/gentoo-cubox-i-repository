@@ -11,25 +11,9 @@ PYTHON_REQ_USE="sqlite"
 
 inherit eutils python-single-r1 multiprocessing autotools
 
-case ${PV} in
-9999)
-	EGIT_REPO_URI="git://github.com/xbmc-imx6/xbmc.git"
-	inherit git-2
-	#SRC_URI="!java? ( mirror://gentoo/${P}-20130413-generated-addons.tar.xz )"
-	;;
-*_alpha*|*_beta*|*_rc*)
-	MY_PV="Frodo_${PV#*_}"
-	MY_P="${PN}-${MY_PV}"
-	SRC_URI="https://github.com/xbmc/xbmc/archive/${MY_PV}.tar.gz -> ${P}.tar.gz
-		!java? ( mirror://gentoo/${P}-generated-addons.tar.xz )"
-	KEYWORDS="~amd64 ~x86"
-	;;
-*)
-	MY_P=${P/_/-*_}
-	SRC_URI="http://mirrors.xbmc.org/releases/source/${MY_P}.tar.gz"
-	KEYWORDS="~amd64 ~x86"
-	;;
-esac
+EGIT_REPO_URI="git://github.com/xbmc-imx6/xbmc.git"
+inherit git-2
+KEYWORDS="-* arm"
 
 DESCRIPTION="XBMC is a free and open source media-player and entertainment hub"
 HOMEPAGE="http://xbmc.org/"
