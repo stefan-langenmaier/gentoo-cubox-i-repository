@@ -20,7 +20,7 @@ HOMEPAGE="http://xbmc.org/"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql neon nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp udev upnp +usb vaapi vdpau webserver +X +xrandr"
+IUSE="airplay alsa altivec avahi bluetooth bluray caps cec css debug +fishbmc gles goom java joystick midi mysql nfs +opengl profile +projectm pulseaudio pvr +rsxs rtmp +samba +sdl sse sse2 sftp udev upnp +usb vaapi vdpau webserver +X +xrandr"
 REQUIRED_USE="
 	pvr? ( mysql )
 	rsxs? ( X )
@@ -42,6 +42,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	>=dev-libs/lzo-2.04
 	dev-libs/tinyxml[stl]
 	dev-libs/yajl
+	dev-python/dbus-python
 	dev-python/simplejson[${PYTHON_USEDEP}]
 	media-fonts/corefonts
 	media-fonts/roboto
@@ -62,7 +63,7 @@ COMMON_DEPEND="${PYTHON_DEPS}
 	media-libs/libpng
 	projectm? ( media-libs/libprojectm )
 	media-libs/libsamplerate
-	sdl? ( media-libs/libsdl[audio,opengl,video,X] )
+	sdl? ( media-libs/libsdl[sound,opengl,video] )
 	alsa? ( media-libs/libsdl[alsa] )
 	>=media-libs/taglib-1.8
 	media-libs/libvorbis
@@ -159,6 +160,8 @@ src_prepare() {
 	multijob_finish
 	elibtoolize
 
+	[[ ${PV} == "9999" ]] && emake -f codegenerator.mk
+
 	# Disable internal func checks as our USE/DEPEND
 	# stuff handles this just fine already #408395
 	export ac_cv_lib_avcodec_ff_vdpau_vc1_decode_picture=yes
@@ -220,7 +223,6 @@ src_configure() {
 		$(use_enable joystick) \
 		$(use_enable midi mid) \
 		$(use_enable mysql) \
-		$(use_enable neon) \
 		$(use_enable nfs) \
 		$(use_enable opengl gl) \
 		$(use_enable profile profiling) \
@@ -246,7 +248,9 @@ src_install() {
 	rm "${ED}"/usr/share/doc/*/{LICENSE.GPL,copying.txt}*
 
 	domenu tools/Linux/xbmc.desktop
-	newicon tools/Linux/xbmc-48x48.png xbmc.png
+	newicon media/icon48x48.png xbmc.png
+#	newicon media/Linux/xbmc-48x48.png xbmc.png
+#	newicon tools/Linux/xbmc-48x48.png xbmc.png
 
 	# Remove optional addons (platform specific and disabled by USE flag).
 	local disabled_addons=(
