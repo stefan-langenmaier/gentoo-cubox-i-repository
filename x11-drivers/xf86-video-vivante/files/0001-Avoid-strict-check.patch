@@ -1,0 +1,26 @@
+From 4b7b86d0dd472a9d20045373bb0b943d301183e2 Mon Sep 17 00:00:00 2001
+From: nemunaire <nemunaire@nemunai.re>
+Date: Sun, 13 Mar 2016 01:24:15 +0100
+Subject: [PATCH 1/2] Avoid strict check
+
+---
+ EXA/src/makefile.tc | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/EXA/src/makefile.tc b/EXA/src/makefile.tc
+index 0b9a9e6..057a22f 100644
+--- a/EXA/src/makefile.tc
++++ b/EXA/src/makefile.tc
+@@ -41,9 +41,6 @@ CFLAGS += -O2
+ 
+ endif
+ 
+-# strict check
+-CFLAGS += -Werror
+-
+ # prefix: install path. This driver will be copied to $(prefix)/lib/xorg/modules/drivers/
+ # when call make -f makefile.linux prefix=... install
+ prefix ?= /usr
+-- 
+2.4.10
+
